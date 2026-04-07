@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectSelect = modal.querySelector('[data-modal-project]');
     const monthInput = modal.querySelector('[data-modal-month]');
     const rateSelect = modal.querySelector('[data-modal-rate]');
+    const rateTypeSelect = modal.querySelector('[data-modal-rate-type]');
     const radioInputs = Array.from(modal.querySelectorAll('input[name="hours"]'));
 
     const closeModal = () => {
@@ -202,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bindScheduleInteractions = () => {
         document.querySelectorAll('[data-schedule-trigger]').forEach((button) => {
             button.addEventListener('click', () => {
-                const { date, displayDate, hours, entryId, projectId, rateOverride } = button.dataset;
+                const { date, displayDate, hours, entryId, projectId, rateOverride, rateTypeOverride } = button.dataset;
 
                 modal.hidden = false;
                 modalDate.textContent = displayDate;
@@ -218,6 +219,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (rateSelect) {
                     rateSelect.value = rateOverride || '';
+                }
+
+                if (rateTypeSelect) {
+                    rateTypeSelect.value = rateTypeOverride || '';
                 }
 
                 if (monthInput) {

@@ -62,7 +62,7 @@ class WorkerController extends Controller
 
     private function validatedData(Request $request, ?Worker $worker = null): array
     {
-        return $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:50'],
             'email' => [
@@ -73,7 +73,12 @@ class WorkerController extends Controller
             ],
             'bank_title' => ['required', 'string', 'max:255'],
             'account_number' => ['required', 'string', 'max:255'],
+            'rate_type' => ['nullable', Rule::in([Worker::RATE_TYPE_HOUR, Worker::RATE_TYPE_DAY])],
             'hourly_rate' => ['required', 'numeric', 'min:0', 'max:999999.99'],
         ]);
+
+        $validated['rate_type'] = $validated['rate_type'] ?? Worker::RATE_TYPE_HOUR;
+
+        return $validated;
     }
 }

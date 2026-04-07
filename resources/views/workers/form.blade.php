@@ -51,7 +51,16 @@
                     </label>
 
                     <label class="field">
-                        <span>Hourly price (EUR) / Precio por hora (EUR) / فی گھنٹہ قیمت (یورو)</span>
+                        <span>Rate type / Tipo de tarifa / ریٹ کی قسم</span>
+                        <select name="rate_type" required>
+                            <option value="hour" @selected(old('rate_type', $worker->rate_type ?? 'hour') === 'hour')>Per hour / Por hora / فی گھنٹہ</option>
+                            <option value="day" @selected(old('rate_type', $worker->rate_type ?? 'hour') === 'day')>Per day / Por día / یومیہ</option>
+                        </select>
+                        @error('rate_type') <small>{{ $message }}</small> @enderror
+                    </label>
+
+                    <label class="field">
+                        <span>Rate amount (EUR) / Importe de tarifa (EUR) / ریٹ رقم (یورو)</span>
                         <input type="number" name="hourly_rate" value="{{ old('hourly_rate', $worker->hourly_rate) }}" min="0" step="0.01" required>
                         @error('hourly_rate') <small>{{ $message }}</small> @enderror
                     </label>

@@ -4,8 +4,8 @@
         <strong>{{ number_format((float) $monthlyHours, 2) }}</strong>
     </article>
     <article class="stat-card">
-        <span>Hourly price / Precio por hora / فی گھنٹہ قیمت</span>
-        <strong>{{ '€'.number_format((float) $worker->hourly_rate, 2) }}</strong>
+        <span>Rate / Tarifa / ریٹ</span>
+        <strong>{{ $worker->formattedRate() }}</strong>
     </article>
     <article class="stat-card">
         <span>Month total price / Precio total del mes / ماہ کی کل قیمت</span>
@@ -15,8 +15,8 @@
 
 @if ((float) $worker->hourly_rate <= 0)
     <div class="alert alert-error">
-        Hourly price is currently €0.00, so the month total price stays €0.00.
-        Update the worker price to calculate the total amount.
+        Worker rate is currently €0.00, so the month total price stays €0.00.
+        Update the worker rate to calculate the total amount.
     </div>
 @endif
 
@@ -40,8 +40,7 @@
     @foreach ($calendarDays as $day)
         @php($dateString = $day['date']->toDateString())
         @php($entry = $day['entry'])
-        @php($dailyRate = $entry ? $entry->effectiveHourlyRate((float) $worker->hourly_rate) : null)
-        @php($dailyTotal = $entry ? ((float) $entry->hours * (float) $dailyRate) : null)
+        @php($dailyTotal = $entry ? $worker->calculateEntryAmount($entry) : null)
         <button
             type="button"
             class="calendar-day {{ $day['inMonth'] ? '' : 'calendar-day-muted' }} {{ $entry ? 'calendar-day-filled' : '' }} {{ $entry?->is_paid ? 'calendar-day-paid' : '' }}"
@@ -52,6 +51,7 @@
             data-entry-id="{{ $entry?->id }}"
             data-project-id="{{ $entry?->project_id }}"
             data-rate-override="{{ $entry?->hourly_rate_override }}"
+            data-rate-type-override="{{ $entry?->rate_type_override }}"
         >
             <span>{{ $day['date']->day }}</span>
             @if ($entry)

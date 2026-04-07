@@ -37,7 +37,7 @@ class WorkerScheduleController extends Controller
             ->keyBy(fn (TimeEntry $entry) => $entry->work_date->toDateString());
         $monthlyHours = (clone $monthlyEntriesQuery)->sum('hours');
         $monthlyTotal = $monthlyEntries->sum(
-            fn (TimeEntry $entry) => $entry->hours * $entry->effectiveHourlyRate((float) $worker->hourly_rate)
+            fn (TimeEntry $entry) => $worker->calculateEntryAmount($entry)
         );
         $ledgerSummary = $this->ledger->summary($worker);
 
@@ -69,6 +69,10 @@ class WorkerScheduleController extends Controller
             'monthlyTotal' => $monthlyTotal,
             'projects' => \App\Models\Project::query()->orderBy('name')->get(),
             'rateOptions' => $this->rateOptions((float) $worker->hourly_rate),
+            'rateTypeOptions' => [
+                Worker::RATE_TYPE_HOUR => 'Per hour / Por hora / فی گھنٹہ',
+                Worker::RATE_TYPE_DAY => 'Per day / Por día / یومیہ',
+            ],
         ];
 
         if ($request->ajax()) {
@@ -85,6 +89,7 @@ class WorkerScheduleController extends Controller
             'project_id' => ['required', 'integer', 'exists:projects,id'],
             'hours' => ['required', 'integer', 'min:1', 'max:16'],
             'hourly_rate_override' => ['nullable', 'numeric', 'min:0', 'max:999999.99'],
+            'rate_type_override' => ['nullable', 'string', 'in:hour,day'],
             'month' => ['nullable', 'date_format:Y-m'],
         ]);
 
@@ -96,6 +101,7 @@ class WorkerScheduleController extends Controller
                 'project_id' => $validated['project_id'],
                 'hours' => $validated['hours'],
                 'hourly_rate_override' => $validated['hourly_rate_override'] ?? null,
+                'rate_type_override' => $validated['rate_type_override'] ?? null,
             ]);
         } else {
             $worker->timeEntries()->create([
@@ -103,6 +109,7 @@ class WorkerScheduleController extends Controller
                 'work_date' => $date,
                 'hours' => $validated['hours'],
                 'hourly_rate_override' => $validated['hourly_rate_override'] ?? null,
+                'rate_type_override' => $validated['rate_type_override'] ?? null,
             ]);
         }
 

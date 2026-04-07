@@ -28,8 +28,7 @@ class WorkerLedgerService
         $runningBalance = 0.0;
 
         foreach ($entries as $entry) {
-            $rate = $entry->effectiveHourlyRate((float) $worker->hourly_rate);
-            $amount = round($entry->hours * $rate, 2);
+            $amount = $worker->calculateEntryAmount($entry);
             $totalEarned += $amount;
             $paidAmount = min($remainingPaid, $amount);
             $remainingPaid = round($remainingPaid - $paidAmount, 2);

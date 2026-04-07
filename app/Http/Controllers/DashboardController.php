@@ -59,7 +59,7 @@ class DashboardController extends Controller
                     ? min(100, round(($hours / $monthlyTargetHours) * 100, 1))
                     : 0;
                 $amount = $worker->timeEntries->sum(
-                    fn (TimeEntry $entry) => $entry->hours * $entry->effectiveHourlyRate((float) $worker->hourly_rate)
+                    fn (TimeEntry $entry) => $worker->calculateEntryAmount($entry)
                 );
 
                 return [

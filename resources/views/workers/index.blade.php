@@ -25,7 +25,7 @@
                                 <summary class="worker-mobile-summary">
                                     <div class="worker-mobile-heading">
                                         <strong>{{ $worker->name }}</strong>
-                                        <span>{{ '€'.number_format((float) $worker->hourly_rate, 2) }}</span>
+                                        <span>{{ $worker->formattedRate() }}</span>
                                     </div>
                                     <span class="worker-mobile-arrow" aria-hidden="true">&#x203A;</span>
                                 </summary>
@@ -62,7 +62,7 @@
                                     <th>Email / Correo / ای میل</th>
                                     <th>Bank title / Título bancario / بینک عنوان</th>
                                     <th>Account number / Número de cuenta / اکاؤنٹ نمبر</th>
-                                    <th>Hourly price / Precio por hora / فی گھنٹہ قیمت</th>
+                                    <th>Rate / Tarifa / ریٹ</th>
                                     <th>Actions / Acciones / کارروائیاں</th>
                                 </tr>
                             </thead>
@@ -74,7 +74,7 @@
                                         <td data-label="Email / Correo / ای میل">{{ $worker->email }}</td>
                                         <td data-label="Bank title / Título bancario / بینک عنوان">{{ $worker->bank_title }}</td>
                                         <td data-label="Account number / Número de cuenta / اکاؤنٹ نمبر">{{ $worker->account_number }}</td>
-                                        <td data-label="Hourly price / Precio por hora / فی گھنٹہ قیمت">{{ '€'.number_format((float) $worker->hourly_rate, 2) }}</td>
+                                        <td data-label="Rate / Tarifa / ریٹ">{{ $worker->formattedRate() }}</td>
                                         <td data-label="Actions / Acciones / کارروائیاں">
                                             <div class="actions">
                                                 <a href="{{ route('workers.schedule.show', $worker) }}" class="button button-secondary">Time / Tiempo / وقت</a>

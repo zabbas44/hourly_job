@@ -523,6 +523,39 @@ class SchedulerAppTest extends TestCase
         ]);
     }
 
+    public function test_per_day_rate_uses_daily_amount_in_schedule_and_dashboard(): void
+    {
+        $this->login();
+
+        $worker = Worker::create([
+            'name' => 'Daily Worker',
+            'phone' => '+34 611 555 111',
+            'email' => 'daily@example.com',
+            'bank_title' => 'Daily Bank',
+            'account_number' => 'DAY-1',
+            'hourly_rate' => '120.00',
+            'rate_type' => 'day',
+        ]);
+        $project = Project::create(['name' => 'Daily Project']);
+
+        TimeEntry::create([
+            'worker_id' => $worker->id,
+            'project_id' => $project->id,
+            'work_date' => '2026-04-08',
+            'hours' => 8,
+        ]);
+
+        $this->get("/workers/{$worker->id}/schedule?month=2026-04")
+            ->assertOk()
+            ->assertSeeText('€120.00/day')
+            ->assertSeeText('€120.00');
+
+        $this->get('/dashboard?month=2026-04')
+            ->assertOk()
+            ->assertSeeText('Daily Worker')
+            ->assertSeeText('€120.00');
+    }
+
     private function login(): void
     {
         $this->post('/login', [

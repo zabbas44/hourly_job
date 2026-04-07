@@ -19,7 +19,7 @@
                             </a>
                         </div>
                     </div>
-                    <p class="muted">{{ $worker->email }} · {{ $worker->phone }} · {{ '€'.number_format((float) $worker->hourly_rate, 2) }} / hour</p>
+                    <p class="muted">{{ $worker->email }} · {{ $worker->phone }} · {{ $worker->formattedRate() }}</p>
                 </div>
                 <div class="schedule-header-actions">
                     <a href="{{ route('payments.index', ['worker_id' => $worker->id, 'open_payment' => 1]) }}" class="button button-success">Pay worker / Pagar / ادائیگی</a>
@@ -63,9 +63,19 @@
                 </label>
 
                 <label class="field">
+                    <span>Rate type / Tipo de tarifa / ریٹ کی قسم</span>
+                    <select name="rate_type_override" data-modal-rate-type>
+                        <option value="">Use worker default ({{ $worker->rateTypeLabel() === 'day' ? 'day' : 'hour' }})</option>
+                        @foreach ($rateTypeOptions as $rateTypeValue => $rateTypeLabel)
+                            <option value="{{ $rateTypeValue }}">{{ $rateTypeLabel }}</option>
+                        @endforeach
+                    </select>
+                </label>
+
+                <label class="field">
                     <span>Rate / Tarifa / ریٹ</span>
                     <select name="hourly_rate_override" data-modal-rate>
-                        <option value="">Use default ({{ '€'.number_format((float) $worker->hourly_rate, 2) }})</option>
+                        <option value="">Use worker default ({{ $worker->formattedRate() }})</option>
                         @foreach ($rateOptions as $rateOption)
                             <option value="{{ $rateOption }}">{{ '€'.number_format((float) $rateOption, 2) }}</option>
                         @endforeach
