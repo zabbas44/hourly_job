@@ -78,7 +78,7 @@ class WorkerController extends Controller
         ]);
 
         $validated['rate_type'] = $validated['rate_type'] ?? Worker::RATE_TYPE_HOUR;
-        $validated['hourly_rate'] = $validated['hourly_rate'] ?? 0;
+        $validated['hourly_rate'] = $validated['hourly_rate'] ?? 1;
 
         return $validated;
     }

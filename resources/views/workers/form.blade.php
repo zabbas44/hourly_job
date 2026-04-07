@@ -63,7 +63,7 @@
 
                     <label class="field">
                         <span>Rate amount (EUR) / Importe de tarifa (EUR) / ریٹ رقم (یورو)</span>
-                        <input type="number" name="hourly_rate" value="{{ old('hourly_rate', $worker->hourly_rate) }}" min="0" step="0.01">
+                        <input type="number" name="hourly_rate" value="{{ old('hourly_rate', $worker->hourly_rate ?? 1) }}" min="0" step="0.01">
                         @error('hourly_rate') <small>{{ $message }}</small> @enderror
                     </label>
 

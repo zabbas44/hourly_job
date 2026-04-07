@@ -186,7 +186,7 @@ class SchedulerAppTest extends TestCase
             'email' => null,
             'bank_title' => null,
             'account_number' => null,
-            'hourly_rate' => 0,
+            'hourly_rate' => 1,
             'rate_type' => Worker::RATE_TYPE_HOUR,
         ]);
     }
