@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "composer install --no-dev --prefer-dist --optimize-autoloader && npm install",
   "buildCommand": "npm run build",
   "outputDirectory": "public/build",
   "functions": {
@@ -15,6 +16,10 @@
     {
       "source": "/js/(.*)",
       "destination": "/public/js/$1"
+    },
+    {
+      "source": "/build/(.*)",
+      "destination": "/public/build/$1"
     },
     {
       "source": "/favicon.ico",
