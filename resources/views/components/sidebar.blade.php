@@ -22,6 +22,7 @@
 
         <nav class="nav-list" id="mobile-nav" data-sidebar-nav>
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Overview / Resumen / جائزہ</a>
+            <a href="{{ route('backups.index') }}" class="{{ request()->routeIs('backups.*') ? 'active' : '' }}">Backup database / Respaldo BD / بیک اپ</a>
             <a href="{{ route('payments.index') }}" class="{{ request()->routeIs('payments.*') ? 'active' : '' }}">Payments / Pagos / ادائیگیاں</a>
             <a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'active' : '' }}">Projects / Proyectos / منصوبے</a>
             <a href="{{ route('workers.index') }}" class="{{ request()->routeIs('workers.*') ? 'active' : '' }}">Workers / Trabajadores / کارکن</a>

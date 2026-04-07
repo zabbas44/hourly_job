@@ -388,6 +388,37 @@ textarea {
     gap: 16px;
 }
 
+.backup-toolbar,
+.backup-list {
+    display: grid;
+    gap: 16px;
+}
+
+.backup-toolbar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.backup-card {
+    display: grid;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: rgba(255, 253, 249, 0.9);
+}
+
+.backup-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.backup-card-header h2 {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
 .payment-filter-form {
     min-width: min(100%, 320px);
 }
@@ -909,6 +940,15 @@ td {
     }
 
     .payment-card-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .backup-toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .backup-card-header {
         flex-direction: column;
         align-items: stretch;
     }

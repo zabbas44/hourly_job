@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
@@ -16,6 +17,12 @@ Route::middleware('guest.scheduler')->group(function (): void {
 
 Route::middleware('scheduler.auth')->group(function (): void {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/backups', [BackupController::class, 'index'])->name('backups.index');
+    Route::post('/backups', [BackupController::class, 'store'])->name('backups.store');
+    Route::post('/backups/restore', [BackupController::class, 'restore'])->name('backups.restore');
+    Route::get('/backups/{backup}/download', [BackupController::class, 'download'])->name('backups.download');
+    Route::get('/backups/export/workers', [BackupController::class, 'exportWorkersCsv'])->name('backups.export.workers');
+    Route::post('/backups/import/workers', [BackupController::class, 'importWorkersCsv'])->name('backups.import.workers');
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
     Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
     Route::get('/payments/export/csv', [PaymentController::class, 'exportCsv'])->name('payments.export.csv');

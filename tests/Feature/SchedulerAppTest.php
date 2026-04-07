@@ -7,6 +7,8 @@ use App\Models\Payment;
 use App\Models\TimeEntry;
 use App\Models\Worker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use Tests\TestCase;
 
 class SchedulerAppTest extends TestCase
@@ -170,6 +172,21 @@ class SchedulerAppTest extends TestCase
         $this->get('/workers')->assertRedirect('/');
     }
 
+    public function test_authenticated_user_can_create_backup_snapshot(): void
+    {
+        $this->login();
+
+        File::deleteDirectory(storage_path('app/backups/snapshots'));
+
+        $this->post('/backups')
+            ->assertRedirect('/backups');
+
+        $files = File::files(storage_path('app/backups/snapshots'));
+
+        $this->assertNotEmpty($files);
+        $this->assertStringEndsWith('.json', $files[0]->getFilename());
+    }
+
     public function test_authenticated_user_can_record_partial_payment_and_see_outstanding_balance(): void
     {
         $this->login();
@@ -321,6 +338,27 @@ class SchedulerAppTest extends TestCase
         $this->assertStringContainsString('CSV Worker', $content);
         $this->assertStringContainsString('CSV Project · 8h', $content);
         $this->assertStringContainsString('50.00', $content);
+    }
+
+    public function test_workers_can_be_imported_from_csv(): void
+    {
+        $this->login();
+
+        $csv = implode("\n", [
+            'name,phone,email,bank_title,account_number,rate_amount,rate_type',
+            'CSV Import,+34 611 999 000,import@example.com,Import Bank,IMPORT-1,75.00,day',
+        ]);
+
+        $file = UploadedFile::fake()->createWithContent('workers.csv', $csv);
+
+        $this->post('/backups/import/workers', [
+            'workers_csv' => $file,
+        ])->assertRedirect('/backups');
+
+        $this->assertDatabaseHas('workers', [
+            'email' => 'import@example.com',
+            'rate_type' => 'day',
+        ]);
     }
 
     public function test_authenticated_user_can_create_update_and_delete_project(): void
