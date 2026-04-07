@@ -20,6 +20,8 @@
                         @method('PUT')
                     @endif
 
+                    <p class="field-note field-full">Only name is required / Solo el nombre es obligatorio / صرف نام لازمی ہے</p>
+
                     <label class="field">
                         <span>Name / Nombre / نام</span>
                         <input type="text" name="name" value="{{ old('name', $worker->name) }}" required>
@@ -28,25 +30,25 @@
 
                     <label class="field">
                         <span>Phone number / Número de teléfono / فون نمبر</span>
-                        <input type="text" name="phone" value="{{ old('phone', $worker->phone) }}" required>
+                        <input type="text" name="phone" value="{{ old('phone', $worker->phone) }}">
                         @error('phone') <small>{{ $message }}</small> @enderror
                     </label>
 
                     <label class="field">
                         <span>Email address / Correo electrónico / ای میل پتہ</span>
-                        <input type="email" name="email" value="{{ old('email', $worker->email) }}" required>
+                        <input type="email" name="email" value="{{ old('email', $worker->email) }}">
                         @error('email') <small>{{ $message }}</small> @enderror
                     </label>
 
                     <label class="field">
                         <span>Bank title / Título bancario / بینک عنوان</span>
-                        <input type="text" name="bank_title" value="{{ old('bank_title', $worker->bank_title) }}" required>
+                        <input type="text" name="bank_title" value="{{ old('bank_title', $worker->bank_title) }}">
                         @error('bank_title') <small>{{ $message }}</small> @enderror
                     </label>
 
                     <label class="field field-full">
                         <span>Account number / Número de cuenta / اکاؤنٹ نمبر</span>
-                        <input type="text" name="account_number" value="{{ old('account_number', $worker->account_number) }}" required>
+                        <input type="text" name="account_number" value="{{ old('account_number', $worker->account_number) }}">
                         @error('account_number') <small>{{ $message }}</small> @enderror
                     </label>
 
@@ -61,7 +63,7 @@
 
                     <label class="field">
                         <span>Rate amount (EUR) / Importe de tarifa (EUR) / ریٹ رقم (یورو)</span>
-                        <input type="number" name="hourly_rate" value="{{ old('hourly_rate', $worker->hourly_rate) }}" min="0" step="0.01" required>
+                        <input type="number" name="hourly_rate" value="{{ old('hourly_rate', $worker->hourly_rate) }}" min="0" step="0.01">
                         @error('hourly_rate') <small>{{ $message }}</small> @enderror
                     </label>
 

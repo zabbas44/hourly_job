@@ -64,20 +64,21 @@ class WorkerController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:50'],
+            'phone' => ['nullable', 'string', 'max:50'],
             'email' => [
-                'required',
+                'nullable',
                 'email',
                 'max:255',
                 Rule::unique('workers', 'email')->ignore($worker?->id),
             ],
-            'bank_title' => ['required', 'string', 'max:255'],
-            'account_number' => ['required', 'string', 'max:255'],
+            'bank_title' => ['nullable', 'string', 'max:255'],
+            'account_number' => ['nullable', 'string', 'max:255'],
             'rate_type' => ['nullable', Rule::in([Worker::RATE_TYPE_HOUR, Worker::RATE_TYPE_DAY])],
-            'hourly_rate' => ['required', 'numeric', 'min:0', 'max:999999.99'],
+            'hourly_rate' => ['nullable', 'numeric', 'min:0', 'max:999999.99'],
         ]);
 
         $validated['rate_type'] = $validated['rate_type'] ?? Worker::RATE_TYPE_HOUR;
+        $validated['hourly_rate'] = $validated['hourly_rate'] ?? 0;
 
         return $validated;
     }

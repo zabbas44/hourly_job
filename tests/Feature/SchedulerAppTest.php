@@ -172,6 +172,25 @@ class SchedulerAppTest extends TestCase
         $this->get('/workers')->assertRedirect('/');
     }
 
+    public function test_authenticated_user_can_create_worker_with_only_name(): void
+    {
+        $this->login();
+
+        $this->post('/workers', [
+            'name' => 'Minimal Worker',
+        ])->assertRedirect('/workers');
+
+        $this->assertDatabaseHas('workers', [
+            'name' => 'Minimal Worker',
+            'phone' => null,
+            'email' => null,
+            'bank_title' => null,
+            'account_number' => null,
+            'hourly_rate' => 0,
+            'rate_type' => Worker::RATE_TYPE_HOUR,
+        ]);
+    }
+
     public function test_authenticated_user_can_create_backup_snapshot(): void
     {
         $this->login();
